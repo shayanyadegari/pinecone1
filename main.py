@@ -1,6 +1,6 @@
 import os
 from typing import List
-
+from fastapi_mcp import FastApiMCP
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from openai import OpenAI
@@ -70,6 +70,12 @@ def ask(query: Query):
     answer_text = resp.choices[0].message.content.strip()
 
     return Answer(context=context, answer=answer_text)
+
+
+
+# Automatically expose all endpoints as MCP tools
+mcp = FastApiMCP(app)
+mcp.mount()
 
 
 # ────────────────── local run ────────────────────
