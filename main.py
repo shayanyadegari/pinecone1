@@ -73,6 +73,7 @@ def ask(query: Query):
 
 
 
+
 # Automatically expose all endpoints as MCP tools
 mcp = FastApiMCP(app)
 mcp.mount()
