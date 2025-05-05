@@ -2,16 +2,33 @@
 FROM python:3.11-slim
 
 # ───────── env & workdir ──────
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED=1 \
+    PATH="/root/.local/bin:${PATH}"
 WORKDIR /app
 
-# ───────── deps ───────────────
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# ───────── install pipx & uv ───
+RUN pip install --no-cache-dir pipx \
+    && pipx install uv
 
-# ───────── source code ────────
+# ───────── install your deps via uv ─
+# (fastapi, uvicorn, fastapi-mcp, python-dotenv, openai, pydantic)
+RUN uv pip install --no-cache-dir \
+      fastapi \
+      uvicorn \
+      fastapi-mcp \
+      python-dotenv \
+      openai \
+      pydantic
+
+# ───────── install mcp-proxy tool ─
+RUN uv tool install mcp-proxy
+
+# ───────── copy source ─────────
 COPY . .
+
+# ───────── set to your app dir ──
+WORKDIR /app/src/app
 
 # ───────── expose & run ───────
 EXPOSE 8000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
