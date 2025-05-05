@@ -8,11 +8,11 @@ WORKDIR /app
 
 # ───────── install pipx & uv ───
 RUN pip install --no-cache-dir pipx \
-    && pipx install uv
+ && pipx install uv
 
-# ───────── install your deps via uv ─
-# (fastapi, uvicorn, fastapi-mcp, python-dotenv, openai, pydantic)
-RUN uv pip install --no-cache-dir \
+# ───────── install deps via uv ──
+# use --system because there's no venv here
+RUN uv pip install --system --no-cache-dir \
       fastapi \
       uvicorn \
       fastapi-mcp \
@@ -26,6 +26,8 @@ RUN uv tool install mcp-proxy
 # ───────── copy source ─────────
 COPY . .
 
+# ───────── set app dir ─────────
+WORKDIR /app/src/app
 
 # ───────── expose & run ───────
 EXPOSE 8000
