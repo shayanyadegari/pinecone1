@@ -18,7 +18,8 @@ RUN uv pip install --system --no-cache-dir \
       fastapi-mcp \
       python-dotenv \
       openai \
-      pydantic
+      pydantic \
+      pinecone
 
 # ───────── install mcp-proxy tool ─
 RUN uv tool install mcp-proxy
