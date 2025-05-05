@@ -27,7 +27,6 @@ RUN uv tool install mcp-proxy
 COPY . .
 
 # ───────── set app dir ─────────
-WORKDIR /app/src/app
 
 # ───────── expose & run ───────
 EXPOSE 8000
